@@ -1,6 +1,5 @@
 import {
   AppLayout,
-  Badge,
   BreadcrumbGroup,
   Button,
   Header,
@@ -8,10 +7,15 @@ import {
   SpaceBetween,
   TopNavigation,
 } from "@cloudscape-design/components";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate, useOutlet } from "react-router-dom";
 
 function App() {
+  const [title, setTitle] = useState("");
+
   const navigate = useNavigate();
+
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -116,7 +120,7 @@ function App() {
               </SpaceBetween>
             }
           >
-            Dashboard
+            {title}
           </Header>
         }
         navigation={
@@ -134,23 +138,11 @@ function App() {
             items={[
               { type: "link", text: "Dashboard", href: "/app" },
               { type: "divider" },
+              { type: "link", text: "Users", href: "/app/users" },
             ]}
           />
         }
-        breadcrumbs={
-          <BreadcrumbGroup
-            items={[
-              { text: "System", href: "#" },
-              { text: "Components", href: "#components" },
-              {
-                text: "Breadcrumb group",
-                href: "#components/breadcrumb-group",
-              },
-            ]}
-            ariaLabel="Breadcrumbs"
-          />
-        }
-        content={<Outlet />}
+        content={<Outlet context={{ title, setTitle }} />}
       />
     </>
   );
