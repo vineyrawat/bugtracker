@@ -1,21 +1,17 @@
 import {
   AppLayout,
-  BreadcrumbGroup,
-  Button,
+  Box,
   Header,
   SideNavigation,
-  SpaceBetween,
+  Toggle,
   TopNavigation,
 } from "@cloudscape-design/components";
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate, useOutlet } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function App() {
   const [title, setTitle] = useState("");
-
   const navigate = useNavigate();
-
-  useEffect(() => {}, []);
 
   return (
     <>
@@ -100,6 +96,7 @@ function App() {
         }}
       />
       <AppLayout
+        toolsHide
         contentType="default"
         ariaLabels={{
           navigation: "Navigation drawer",
@@ -110,37 +107,30 @@ function App() {
           toolsClose: "Close help panel",
           toolsToggle: "Open help panel",
         }}
-        contentHeader={
-          <Header
-            variant="h1"
-            actions={
-              <SpaceBetween direction="horizontal" size="xs">
-                <Button>Secondary button</Button>
-                <Button variant="primary">Primary button</Button>
-              </SpaceBetween>
-            }
-          >
-            {title}
-          </Header>
-        }
+        contentHeader={<Header variant="h1">{title}</Header>}
         navigation={
-          <SideNavigation
-            header={{
-              href: "/",
-              text: "BugTracker",
-            }}
-            onFollow={(event) => {
-              if (!event.detail.external) {
-                event.preventDefault();
-                navigate(event.detail.href);
-              }
-            }}
-            items={[
-              { type: "link", text: "Dashboard", href: "/app" },
-              { type: "divider" },
-              { type: "link", text: "Users", href: "/app/users" },
-            ]}
-          />
+          <>
+            <SideNavigation
+              header={{
+                href: "/",
+                text: "BugTracker",
+              }}
+              onFollow={(event) => {
+                if (!event.detail.external) {
+                  event.preventDefault();
+                  navigate(event.detail.href);
+                }
+              }}
+              items={[
+                { type: "link", text: "Dashboard", href: "/app" },
+                { type: "divider" },
+                { type: "link", text: "Users", href: "/app/users" },
+              ]}
+            />
+            <Box padding={"xl"}>
+              <Toggle checked>Dark Theme</Toggle>
+            </Box>
+          </>
         }
         content={<Outlet context={{ title, setTitle }} />}
       />
